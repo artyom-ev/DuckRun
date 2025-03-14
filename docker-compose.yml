@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  app:
+    image: my-streamlit-app
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      DB_USERNAME: myuser
+      DB_PASSWORD: mypassword
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: mydatabase
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
