@@ -1,24 +1,35 @@
-version: "3.8"
 services:
   app:
-    image: my-streamlit-app
     build: .
     ports:
       - "8501:8501"
-    environment:
-      DB_USERNAME: myuser
-      DB_PASSWORD: mypassword
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: mydatabase
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    networks:
+      - mynetwork
 
   db:
-    image: postgres:13
+    image: postgres:14
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydatabase
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mynetwork
+
+volumes:
+  postgres_data:
+
+networks:
+  mynetwork:
+    driver: bridge

@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from config import settings
 from sqlalchemy import create_engine, text
 
-database_url = settings.DATABASE_URL_psycopg
+database_url = settings.DATABASE_URL_psycopg 
 
 engine = create_engine(database_url)
 

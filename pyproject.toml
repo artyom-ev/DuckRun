@@ -17,6 +17,7 @@ dependencies = [
     "psycopg2-binary>=2.9.10,<3",
     "psycopg-binary>=3.2.5,<4",
     "psycopg>=3.2.5,<4",
+    "asyncpg>=0.30.0",
 ]
 
 [tool.uv]
